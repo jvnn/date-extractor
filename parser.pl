@@ -1,6 +1,14 @@
 :- consult("utils.pl").
 :- consult("date_definitions.pl").
 
+/* for usage from command line:
+  swipl -q -f parser.pl -t "find_dates." -- <here a string with possible dates> */
+find_dates() :-
+  current_prolog_flag(argv, [Arg|_]),
+  findall(Date, find_dates(Arg, Date), Res),
+  writeln(Res).
+
+/* for interactive usage from the interpreter */
 find_dates(In, Res) :-
   split_input(In, AsList),
   date_in_list(AsList, Res).
