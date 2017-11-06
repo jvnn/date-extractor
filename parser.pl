@@ -1,35 +1,38 @@
 :- consult("utils.pl").
 :- consult("date_definitions.pl").
 
-is_date(X, Date) :-
+find_dates(In, Res) :-
+  split_input(In, AsList),
+  date_in_list(AsList, Res).
+
+date_in_list([X|Rest], Date) :-
   date_normal(X, Date);
-  date_reverse(X, Date).
-is_date([X|Rest], Date) :-
+  date_reverse(X, Date);
   date_human(X, Date);
-  is_date(Rest, Date).
+  date_in_list(Rest, Date).
 
 /*
   normal: e.g. 1/1/2000
   reverse: e.g. 2010-12-9
  */
-date_normal([X1,X2,X3,X4,X5|_], Date) :-
-  month(X3, Month_num),
-  day_num(X1,Month_num,X5),
-  sep(X2),
-  sep(X4),
-  year(X5),
-  null_padded(X3, MonthPadded),
-  null_padded(X1, DayPadded),
-  join_strings([X5,"-",MonthPadded,"-",DayPadded], Date).
-date_reverse([X1,X2,X3,X4,X5|_], Date) :-
-  month(X3, Month_num),
-  year(X1),
-  sep(X2),
-  sep(X4),
-  day_num(X5,Month_num,X1),
-  null_padded(X3, MonthPadded),
-  null_padded(X5, DayPadded),
-  join_strings([X1,"-",MonthPadded,"-",DayPadded], Date).
+date_normal(X, Date) :-
+  looks_like_date(X, [X1,X2,X3]),
+  valid_date(X1, X2, X3, Date).
+date_reverse(X, Date) :-
+  looks_like_date(X, [X1,X2,X3]),
+  valid_date(X3, X2, X1, Date).
+
+looks_like_date(X, Ret) :-
+  split_by_separator(X, "/", Ret);
+  split_by_separator(X, "-", Ret);
+  split_by_separator(X, ".", Ret).
+
+valid_date(D, M, Y, Date) :-
+  month(M, MonthNum),
+  day_num(D, MonthNum, Y),
+  null_padded(M, MonthPadded),
+  null_padded(D, DayPadded),
+  join_strings([Y,"-",MonthPadded,"-",DayPadded], Date).
 
 
 date_human("today", Date) :- today(Date).
