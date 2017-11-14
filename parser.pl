@@ -20,12 +20,20 @@ date_in_list([X|Rest], Date) :-
   date_human(X, Date);
   date_in_list(Rest, Date).
 
+/* things like "1st of January 2010" */
+date_in_list([X1,X2,X3,X4|_], Date) :-
+  date_with_numbers_and_text(X1, X2, X3, X4, Date).
+
 date_in_list([X1,X2,X3|_], Date) :-
   date_with_numbers_and_text(X1, X2, X3, Date).
 
-/* for the end of list where above rule would fail */
+/* Edge cases: for the end of list where above rules would fail */
 date_in_list([X1,X2|[]], Date) :-
   date_with_numbers_and_text(X1, X2, Date).
+
+date_in_list([X1,X2,X3|[]], Date) :-
+  X2 = "of",
+  date_with_numbers_and_text(X1, X3, Date).
 
 /*
   normal: e.g. 1/1/2000

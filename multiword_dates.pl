@@ -1,6 +1,10 @@
 :- consult("date_definitions.pl").
 :- consult("utils.pl").
 
+date_with_numbers_and_text(X1, X2, X3, X4, Date) :-
+  X2 = "of",
+  date_with_textual_month(X1, X3, X4, Date).
+
 date_with_numbers_and_text(X1, X2, X3, Date) :-
   date_with_textual_month(X1, X2, X3, Date);
   date_with_textual_month(X2, X1, X3, Date).
