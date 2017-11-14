@@ -1,5 +1,6 @@
 :- consult("utils.pl").
 :- consult("date_definitions.pl").
+:- consult("multiword_dates.pl").
 
 /* for usage from command line:
   swipl -q -f parser.pl -t "find_dates." -- <here a string with possible dates> */
@@ -19,6 +20,13 @@ date_in_list([X|Rest], Date) :-
   date_human(X, Date);
   date_in_list(Rest, Date).
 
+date_in_list([X1,X2,X3|_], Date) :-
+  date_with_numbers_and_text(X1, X2, X3, Date).
+
+/* for the end of list where above rule would fail */
+date_in_list([X1,X2|[]], Date) :-
+  date_with_numbers_and_text(X1, X2, Date).
+
 /*
   normal: e.g. 1/1/2000
   reverse: e.g. 2010-12-9
@@ -36,10 +44,11 @@ looks_like_date(X, Ret) :-
   split_by_separator(X, ".", Ret).
 
 valid_date(D, M, Y, Date) :-
+  year(Y),
   month(M, MonthNum),
   day_num(D, MonthNum, Y),
-  null_padded(M, MonthPadded),
-  null_padded(D, DayPadded),
+  zero_padded(M, MonthPadded),
+  zero_padded(D, DayPadded),
   join_strings([Y,"-",MonthPadded,"-",DayPadded], Date).
 
 

@@ -1,17 +1,21 @@
 join_strings([], X) :- X = "".
 join_strings([X|Rest], Final) :- join_strings(Rest, Y), string_concat(X, Y, Final).
 
-
-null_padded(X, Res) :-
+/* for string values: */
+zero_padded(X, Res) :-
+  (atom(X); string(X)),
   atom_number(X, Y),
-  Y < 10,
-  number_string(Y, NumStr),
+  zero_padded(Y, Res).
+/* for values that are already numbers: */
+zero_padded(X, Res) :-
+  number(X),
+  X < 10,
+  number_string(X, NumStr),
   string_concat("0", NumStr, Res).
-null_padded(X, Res) :-
-  atom_number(X, Y),
-  Y >= 10,
-  Res = X.
-
+zero_padded(X, Res) :-
+  number(X),
+  X >= 10,
+  number_string(X, Res).
 
 empty_stripped([], []).
 empty_stripped([""|Rest], Out) :-
