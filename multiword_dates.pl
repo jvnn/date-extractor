@@ -1,17 +1,23 @@
 :- consult("date_definitions.pl").
 :- consult("utils.pl").
 
-date_with_numbers_and_text(X1, X2, X3, X4, Date) :-
+/* things like "1st of January 2010" */
+date_with_numbers_and_text([X1,X2,X3,X4|_], Date) :-
   X2 = "of",
   date_with_textual_month(X1, X3, X4, Date).
 
-date_with_numbers_and_text(X1, X2, X3, Date) :-
+date_with_numbers_and_text([X1,X2,X3|_], Date) :-
   date_with_textual_month(X1, X2, X3, Date);
   date_with_textual_month(X2, X1, X3, Date).
 
-date_with_numbers_and_text(X1, X2, Date) :-
+/* Edge cases: for the end of list where above rules would fail */
+date_with_numbers_and_text([X1,X2|[]], Date) :-
   date_with_textual_month_and_without_year(X1, X2, Date);
   date_with_textual_month_and_without_year(X2, X1, Date).
+
+date_with_numbers_and_text([X1,X2,X3|[]], Date) :-
+  X2 = "of",
+  date_with_numbers_and_text([X1,X3], Date).
 
 
 /* first version for dates that include a year, the second for dates

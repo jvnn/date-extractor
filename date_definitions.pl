@@ -6,21 +6,18 @@ year(X) :-
 month(X, Num) :- month_num(X), Num = X.
 month(X, Num) :- month_text(X, Num).
 
-month_text(X, Num) :-
-  string_lower(X, Lower),
-  month_text_lowercase(Lower, Num).
-month_text_lowercase(X, Num) :- member(X, ["january", "jan"]), Num = "01".
-month_text_lowercase(X, Num) :- member(X, ["february", "feb"]), Num = "02".
-month_text_lowercase(X, Num) :- member(X, ["march", "mar"]), Num = "03".
-month_text_lowercase(X, Num) :- member(X, ["april", "apr"]), Num = "04".
-month_text_lowercase(X, Num) :- member(X, ["may"]), Num = "05".
-month_text_lowercase(X, Num) :- member(X, ["june", "jun"]), Num = "06".
-month_text_lowercase(X, Num) :- member(X, ["july", "jul"]), Num = "07".
-month_text_lowercase(X, Num) :- member(X, ["august", "aug"]), Num = "08".
-month_text_lowercase(X, Num) :- member(X, ["september", "sep"]), Num = "09".
-month_text_lowercase(X, Num) :- member(X, ["october", "oct"]), Num = "10".
-month_text_lowercase(X, Num) :- member(X, ["november", "nov"]), Num = "11".
-month_text_lowercase(X, Num) :- member(X, ["december", "dec"]), Num = "12".
+month_text(X, Num) :- member(X, ["january", "jan"]), Num = "01".
+month_text(X, Num) :- member(X, ["february", "feb"]), Num = "02".
+month_text(X, Num) :- member(X, ["march", "mar"]), Num = "03".
+month_text(X, Num) :- member(X, ["april", "apr"]), Num = "04".
+month_text(X, Num) :- member(X, ["may"]), Num = "05".
+month_text(X, Num) :- member(X, ["june", "jun"]), Num = "06".
+month_text(X, Num) :- member(X, ["july", "jul"]), Num = "07".
+month_text(X, Num) :- member(X, ["august", "aug"]), Num = "08".
+month_text(X, Num) :- member(X, ["september", "sep"]), Num = "09".
+month_text(X, Num) :- member(X, ["october", "oct"]), Num = "10".
+month_text(X, Num) :- member(X, ["november", "nov"]), Num = "11".
+month_text(X, Num) :- member(X, ["december", "dec"]), Num = "12".
 
 month_num(X) :-
   atom_number(X, Y),
@@ -57,8 +54,4 @@ leap_year(Y) :-
 
 /* XXX: holidays are complicated. What exactly is christmas (24. or 25.)?
   Easter changes the whole time. New year requires multiple words....
-date_holiday(Str, Date) :-
-  string_lower(Str, Lower),
-  date_holiday_lowercase(Lower, Date).
-date_holiday_lowercase("christmas", "12-25").
 */
