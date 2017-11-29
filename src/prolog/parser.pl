@@ -7,7 +7,10 @@
   swipl -q -f parser.pl -t "find_dates." -- <here a string with possible dates> */
 find_dates() :-
   current_prolog_flag(argv, [Arg|_]),
-  findall(Date, find_dates(Arg, Date), Res),
+  find_all_dates(Arg).
+
+find_all_dates(In) :-
+  findall(Date, find_dates(In, Date), Res),
   writeln(Res).
 
 /* for interactive usage from the interpreter */
