@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # A simple "unit test" for the parser
 
@@ -18,7 +18,7 @@ in_two_days=`date -d @$timestamp_in_two_days +%F`
 
 function test {
   echo "$num: Testing $1"
-  result=`swipl -q -f parser.pl -t "find_dates." -- "$2"`
+  result=`swipl -q -f "src/prolog/parser.pl" -t "find_dates." -- "$2"`
   if [ $result == $3 ]
   then
     echo "SUCCESS"
