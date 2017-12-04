@@ -29,7 +29,8 @@ function on_data(incoming) {
   if (output.trim().endsWith('true.')) {
     // we're done
     waiting_response.writeHead(200, {"ContentType": "application/json"});
-    waiting_response.write(output.split('\n')[0]);
+    let response = output.split('\n')[0];
+    waiting_response.write(response.replace(/(\d{4}-\d{2}-\d{2})/g, "\"$1\""));
     waiting_response.end();
     output = "";
     waiting_response = null;
