@@ -11,7 +11,7 @@ date_relative([X1,X2,X3|_], Date) :-
   get_date(-1 * Number * InSeconds, Date).
 
 date_relative([X1,X2,X3|_], Date) :-
-  X1 = "in",
+  (X1 = "in"; X1 = "after"),
   as_number(X2, Number),
   time_value(X3, InSeconds),
   get_date(Number * InSeconds, Date).
@@ -34,6 +34,8 @@ as_number("seven", 7).
 as_number("eight", 8).
 as_number("nine", 9).
 as_number("ten", 10).
+as_number("eleven", 11).
+as_number("twelve", 12).
 as_number(X, Number) :-
   atom_number(X, Number).
 

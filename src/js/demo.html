@@ -1,0 +1,70 @@
+<html>
+  <head>
+    <title>Date Extractor Demo</title>
+    <meta charset="utf-8" /> 
+  </head>
+
+  <body>
+    <div class="form">
+      <input id="query" placeholder="Write some text with dates"></input>
+      <div id="button" onclick="doQuery();">Execute</div>
+    </div>
+    <div id="results">...</div>
+
+
+    <style>
+      body {
+        background: #2a232c;
+        font-family: sans-serif;
+      }
+
+      .form {
+        width: 500px;
+        margin: 100px auto 20px;
+        background: #211e24;
+        padding: 40px;
+        border-radius: 5px;
+      }
+
+      #query {
+        width: 90%;
+        margin: 0 auto 40px;
+        background: #808080;
+        display: block;
+        padding: 10px;
+        color: #e0e0e0;
+        border: 3px solid #00000000;
+        border-left: 3px solid #c0c0c0;
+      }
+
+      #button {
+        background: #93e687;
+        cursor: pointer;
+        padding: 10px;
+        width: 100px;
+        text-align: center;
+        font-weight: lighter;
+        margin: auto;
+      }
+
+      #button:hover {
+        background: #67ef53;
+      }
+
+      #button:active {
+        background: #96b491;
+      }
+
+      #results {
+        width: 500px;
+        margin: 0 auto 100px;
+        background: #18151a;
+        padding: 40px;
+        color: #96f389;
+        border-radius: 5px;
+      }
+    </style>
+
+    <script type="text/javascript" src="/client.js"></script>
+  </body>
+</html>
