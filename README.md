@@ -28,5 +28,6 @@ to run the Prolog program as a (toy) microservice or to demo the code from a
 browser.
 
 The server will start using the port 8080, and sends JSON responses (an array of
-found dates) to queries like "/?text=whatever". The browser demo interface can
-be accessed via "/demo".
+found dates) to queries like "/?text=whatever&tz_offset=0". The timezone offset
+uses same format as `new Date().getTimezoneOffset()` JavaScript call.
+The browser demo interface can be accessed via "/demo".

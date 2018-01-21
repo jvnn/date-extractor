@@ -7,7 +7,7 @@ function doQuery() {
     // beautify the results a little for easier reading
     result_area.innerHTML = response.replace(/,/g, ', ');
   });
-  req.open("GET", "/?text=" + encodeURIComponent(input.value));
+  req.open("GET", "/?text=" + encodeURIComponent(input.value) + "&tz_offset=" + new Date().getTimezoneOffset());
   req.send();
 }
 

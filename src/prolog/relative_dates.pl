@@ -1,30 +1,31 @@
 /* things like "yesterday", "a week ago", "two days ago", "a week from now", "in two days" */
 
-date_relative(["today"|_], Date) :- today(Date).
-date_relative(["tomorrow"|_], Date) :- tomorrow(Date).
-date_relative(["yesterday"|_], Date) :- yesterday(Date).
+date_relative(TimezoneOffset, ["today"|_], Date) :- today(TimezoneOffset, Date).
+date_relative(TimezoneOffset, ["tomorrow"|_], Date) :- tomorrow(TimezoneOffset, Date).
+date_relative(TimezoneOffset, ["yesterday"|_], Date) :- yesterday(TimezoneOffset, Date).
 
-date_relative([X1,X2,X3|_], Date) :-
+date_relative(TimezoneOffset, [X1,X2,X3|_], Date) :-
   as_number(X1, Number),
   time_value(X2, InSeconds),
   X3 = "ago",
-  get_date(-1 * Number * InSeconds, Date).
+  get_date(-1 * Number * InSeconds - TimezoneOffset, Date).
 
-date_relative([X1,X2,X3|_], Date) :-
+date_relative(TimezoneOffset, [X1,X2,X3|_], Date) :-
   (X1 = "in"; X1 = "after"),
   as_number(X2, Number),
   time_value(X3, InSeconds),
-  get_date(Number * InSeconds, Date).
+  get_date(Number * InSeconds - TimezoneOffset, Date).
 
-date_relative([X1,X2,X3,X4|_], Date) :-
+date_relative(TimezoneOffset, [X1,X2,X3,X4|_], Date) :-
   as_number(X1, Number),
   time_value(X2, InSeconds),
   X3 = "from",
   X4 = "now",
-  get_date(Number * InSeconds, Date).
+  get_date(Number * InSeconds - TimezoneOffset, Date).
 
 
 as_number("a", 1).
+as_number("one", 1).
 as_number("two", 2).
 as_number("three", 3).
 as_number("four", 4).
@@ -48,18 +49,19 @@ time_value("weeks", 7*24*60*60).
    some amount of months from a date requires checking if the year changes etc. */
 
 
-today(X) :-
+today(TimezoneOffset, X) :-
   get_time(Time),
-  format_time(string(X), "%Y-%m-%d", Time).
+  FinalTime is Time - TimezoneOffset,
+  format_time(string(X), "%Y-%m-%d", FinalTime).
 
-tomorrow(X) :-
+tomorrow(TimezoneOffset, X) :-
   get_time(Time),
-  TimeTomorrow is Time + (24*60*60),
+  TimeTomorrow is Time + (24*60*60) - TimezoneOffset,
   format_time(string(X), "%Y-%m-%d", TimeTomorrow).
 
-yesterday(X) :-
+yesterday(TimezoneOffset, X) :-
   get_time(Time),
-  TimeYesterday is Time - (24*60*60),
+  TimeYesterday is Time - (24*60*60) - TimezoneOffset,
   format_time(string(X), "%Y-%m-%d", TimeYesterday).
 
 

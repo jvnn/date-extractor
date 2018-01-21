@@ -6,28 +6,35 @@
 /* for usage from command line:
   swipl -q -f parser.pl -t "find_dates." -- <here a string with possible dates> */
 find_dates() :-
-  current_prolog_flag(argv, [Arg|_]),
-  find_all_dates(Arg).
+  current_prolog_flag(argv, [Input, TimezoneOffsetStr|_]),
+  atom_number(TimezoneOffsetStr, TimezoneOffset),
+  find_all_dates(TimezoneOffset, Input).
 
-find_all_dates(In) :-
-  findall(Date, find_dates(In, Date), Res),
+find_dates() :-
+  current_prolog_flag(argv, [Arg]),
+  find_all_dates(0, Arg).
+
+find_all_dates(TimezoneOffset, In) :-
+  findall(Date, find_dates(TimezoneOffset, In, Date), Res),
   writeln(Res).
 
 /* for interactive usage from the interpreter */
 find_dates(In, Res) :-
+  find_dates(0, In, Res).
+
+find_dates(TimezoneOffset, In, Res) :-
   string_lower(In, Lower),
   split_input(Lower, AsList),
-  date_in_list(AsList, Res).
+  date_in_list(TimezoneOffset * 60, AsList, Res).
 
-
-date_in_list(List, Date) :-
+date_in_list(TimezoneOffset, List, Date) :-
   date_with_numbers_and_text(List, Date);
-  date_relative(List, Date).
+  date_relative(TimezoneOffset, List, Date).
 
-date_in_list([X|Rest], Date) :-
+date_in_list(TimezoneOffset, [X|Rest], Date) :-
   date_normal(X, Date);
   date_reverse(X, Date);
-  date_in_list(Rest, Date).
+  date_in_list(TimezoneOffset, Rest, Date).
 
 /*
   normal: e.g. 1/1/2000
