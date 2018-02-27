@@ -16,11 +16,15 @@ let request_queue = [];
 let waiting_response = null;
 let output = "";
 
+function escape_quotes(text) {
+  return text.replace(/(?<!\\)"/g, "\\\"")
+}
+
 function handle_request_queue() {
   if (request_queue.length > 0 && waiting_response == null) {
     let req = request_queue.pop();
     waiting_response = req.res;
-    prolog.stdin.write('find_all_dates(' + req.tz_offset + ', \"' + req.text + '\").\n');
+    prolog.stdin.write('find_all_dates(' + req.tz_offset + ', \"' + escape_quotes(req.text) + '\").\n');
   }
 }
 
@@ -40,6 +44,7 @@ function on_data(incoming) {
 
 let prolog = childproc.spawn('swipl', ['-q', '-f', '../prolog/parser.pl']);
 prolog.stdout.on('data', on_data);
+prolog.stderr.on('data', function(data) {console.log(data.toString())});
 
 http.createServer((req, res) => {
   const static_paths = {

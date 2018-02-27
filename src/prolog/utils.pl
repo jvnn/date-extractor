@@ -26,7 +26,7 @@ empty_stripped([E|Rest], [E|Out]) :-
 
 
 split_input(Str, Out) :-
-  split_string(Str, " ", "\t\n,.;:!?", List),
+  split_string(Str, " ", "\t\n,.;:!?\"", List),
   empty_stripped(List, Out).
 
 
